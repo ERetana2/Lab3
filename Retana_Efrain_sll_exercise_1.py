@@ -1,42 +1,63 @@
 
 """
 @author: Efrain Retana
+@Assignment: sll_exercise_1
+@Professor: Olac Fuentes
 """
 import singly_linked_list as sll
 import matplotlib.pyplot as plt
 import math
-
+#--------------------------------------------
 def first(L):
-    if L.head != None:
+    if L.head != None: # return the first element of the list
         return L.head.data
     return -math.inf
-
-def last(L):
+#----------------------------------------------
+def last(L): # return the last element of the list(tail)
     if L.tail != None:
         return L.tail.data
     return -math.inf
-
+#--------------------------------------------
 def swap_first_and_last(L):
-    # Your code goes here
-    return None
-
+    # if the list has 1 element return L
+    if L.head == None or L.head.next == None:
+        return L
+    # if the list has two elements, swap the first and second
+    if L.head.next.next == None:
+        L.tail.next = L.head
+        L.head.next = None
+        return L
+    # create a temp value to iterate to tail - 1 then perform swap with head and tail
+    temp = L.head
+    while temp.next != L.tail:
+        temp = temp.next
+    L.tail.next = L.head.next
+    L.head.next = None
+    temp.next = L.head
+    L.head, L.tail = L.tail, L.head
+    return L
+#------------------------------------------
 def length(L):
+    # iterate through the list and count the amount of elements then return the number
     tempL = L.head
     length = 0
     while tempL != None:
         length += 1
         tempL = tempL.next
     return length
-
+#-----------------------------------------
 def sum_list(L):
+    # iterate through every element and add it to a variable and return the sum of the list
     tempL = L.head
     sum = 0
     while tempL != None:
         sum += tempL.data
         tempL = tempL.next
     return sum
-
+#-----------------------------------------
 def max_list(L):
+    # iterate through the list and compare the value of the current data to the overall
+    # max then return max
     if L.head == None:
         return -math.inf
     tempL = L.head
@@ -46,31 +67,35 @@ def max_list(L):
             max = tempL.data
         tempL = tempL.next
     return max
-
+#-----------------------------------------
 def to_list(L):
+    #iterate through the linked list and append all data to a list, finally return the list
+    if L.head == None:
+        return []
     tempL= L.head
     A = []
     while tempL != None:
         A.append(tempL.data)
         tempL = tempL.next
     return A
-
+#----------------------------------------
 def identical(L1,L2):
+    #check the lengths of both lists to make sure they are equal
     if length(L1) != length(L2):
         return False
     
     tempL1 = L1.head
     tempL2 = L2.head
-    
+    # iterate through both lists and compare their data values to see if they are equal
     while tempL1 != None and tempL2 != None :
         if tempL1.data != tempL2.data:
             return False
         tempL1 = tempL1.next
         tempL2 = tempL2.next
-        
     return True
 
 def delete_first(L):
+    # remove the reference to the first node
     if L == None:
         return L
     L.head = L.head.next
