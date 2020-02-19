@@ -84,8 +84,7 @@ def identical(L1,L2):
     if length(L1) != length(L2):
         return False
     
-    tempL1 = L1.head
-    tempL2 = L2.head
+    tempL1 , tempL2 = L1.head, L2.head
     # iterate through both lists and compare their data values to see if they are equal
     while tempL1 != None and tempL2 != None :
         if tempL1.data != tempL2.data:
