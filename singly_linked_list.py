@@ -3,6 +3,7 @@
 # Last modified February 12, 2020
 
 import matplotlib.pyplot as plt
+import math
 import numpy as np
 
 class ListNode:
@@ -23,7 +24,8 @@ class List:
             print(t.data,end=' ')
             t = t.next
         print()
-
+#---------------------------------------------
+#PROBLEM 1
     def append(self,x):
         if self.head is None: #List is empty
             self.head = ListNode(x)
@@ -31,10 +33,153 @@ class List:
         else:
             self.tail.next = ListNode(x)
             self.tail = self.tail.next
-
+#----------------------------------------
+#PROBLEM 2
     def extend(self,python_list):
         for d in python_list:
             self.append(d)
+#--------------------------------
+#PROBLEM 3
+    def insert(self,i,x):
+        tempL1 = L1.head
+
+        if self.head == None : 
+            return
+        if i == 0:
+            self.head = ListNode(x,self.head)
+            
+        while i > 1 and tempL1  != None:
+            tempL1 = tempL1.next
+            i -= 1
+        newNode = ListNode(x,None)
+        tempL1.next,newNode.next = newNode,tempL1.next
+#------------------------------------------------------
+#PROBLEM 4
+    def remove(self,x):
+        if self.head == None:
+            return ValueError
+        if self.head.data == x:
+             self.head = None
+             return
+        tempL1 = L1.head
+        
+        while tempL1.next.data != x:
+            if tempL1.next == None:
+                return ValueError
+            tempL1 = tempL1.next
+        tempL1.next = tempL1.next.next
+#--------------------------------------
+# PROBLEM 5
+    def pop(self,*arg):
+        if self.head == None:
+            return
+        tempL1 = self.head
+        
+        if None in arg:
+            while tempL1.next.next != None:
+                tempL1 = tempL1.next
+            save_val = tempL1.next.data
+            tempL1.next = None
+            return save_val
+        else:
+            for i in arg:
+                while i != 1 and tempL1.next != None:
+                    tempL1 = tempL1.next
+                    i = i - 1
+                if i != 1 and tempL1.next == None:
+                    return ValueError
+                save_val = tempL1.next.data
+                tempL1.next = tempL1.next.next
+                return save_val
+            
+#-----------------------------------
+#PROBLEM 6
+    def clear(self):
+        self.head == None
+#------------------------------------
+#PROBLEM 7
+    def index(self,i,firstBounds = 0,secondBounds = math.inf):
+        if self.head == None:
+            return
+        
+        tempL1 = self.head
+        currIndex = 0
+        iterLength = secondBounds - firstBounds
+        
+        while tempL1 != None and currIndex != iterLength:
+            while tempL1 != None and firstBounds != 0:
+                tempL1 = tempL1.next
+                firstBounds -= 1
+            if tempL1.data == i:
+                return currIndex 
+            tempL1 = tempL1.next
+            currIndex += 1
+        if tempL1 == None or currIndex == iterLength:
+             return ValueError 
+#----------------------------------------------------------
+#PROBLEM 8
+    def count(self,x):
+        count = 0
+        if self.head == None:
+            return
+        tempL1 = self.head
+        
+        while tempL1 != None:
+            if tempL1.data == x:
+                count += 1
+            tempL1 = tempL1.next
+        return count
+#-------------------------------------
+#PROBLEM 9
+    def sort(self):
+        if self.head == None:
+            return None
+        if self.head.next == None:
+            return self 
+        
+        dataList = []
+        tempL1 = self.head
+        
+        while tempL1 != None:
+            dataList.append(tempL1.data)
+            tempL1 = tempL1.next
+        dataList.sort()
+        tempL1 = self.head
+        while tempL1 != None:
+            tempL1.data = dataList.pop(0)
+            tempL1 = tempL1.next
+        
+        
+#--------------------------------------
+#PROBLEM 10
+    def reverse(self):
+        if self.head == None:
+            return
+        tempL1 = self.head
+        dataList = []
+        while tempL1 != None:
+            dataList.append(tempL1.data)
+            tempL1 = tempL1.next
+        tempL1 = self.head
+        while tempL1 != None:
+            tempL1.data = dataList.pop()
+            tempL1 = tempL1.next
+        
+    
+#------------------------------------
+#PROBLEM 11
+    def copy(self):
+        if self.head == None:
+            return
+        tempL1 = self.head
+        ListCopy = List()
+        
+        while tempL1 != None:
+            newNode = ListNode(tempL1.data)
+            ListCopy.append(newNode)
+            tempL1 = tempL1.next
+        return ListCopy
+#----------------------------------------
 
     def _rectangle(self,x0,y0,dx,dy):
         # Returns the coordinates of the corners of a rectangle
@@ -90,18 +235,24 @@ class List:
 
 if __name__ == "__main__":
     # It won't execute when this file is imported
-
     plt.close('all')
     L1 = List()
-    L1.draw('Empty list')
-    L1.extend(list(np.random.permutation(10)))
-    L1.draw('Unsorted list')
-    L1 = List()
-    L1.extend(list(np.arange(10)))
-    L1.draw('Sorted list')
-    L1.tail = L1.head.next.next
-    L1.draw('Bad list!')
-    L1.tail = None
-    L1.draw('Another bad list!')
+    L1.extend([5,1,4,2,6])
+#    L1.insert(0,8)
+#    L1.remove(2)
+#    print(L1.pop(3))
+    print(L1.index(1))
+    L1.reverse()
+    L1.print()
+#    L1.draw('Empty list')
+#    L1.extend(list(np.random.permutation(10)))
+#    L1.draw('Unsorted list')
+#    L1 = List()
+#    L1.extend(list(np.arange(10)))
+#    L1.draw('Sorted list')
+#    L1.tail = L1.head.next.next
+#    L1.draw('Bad list!')
+#    L1.tail = None
+#    L1.draw('Another bad list!')
 
 

@@ -13,9 +13,11 @@ import math
 def sorted_rows(A):
     # iterate through the whole matrix and compare if values are sorted
     for i in range(len(A)):
-        for j in range(len(A[i]) - 1):
-            if(A[i][j] > A[i][j+1]):
-                return False
+#        for j in range(len(A[i]) - 1):
+#            if(A[i][j] > A[i][j+1]):
+#                return False
+        TF = issortedrows(A,i)
+#        all(A[i][j] > A[i][j + 1] for j in range(len(A[i])))
     return True
 
 def second(L):
