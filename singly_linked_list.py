@@ -1,11 +1,13 @@
-# Code to implement and display singly-linked lists
-# Programmed by Olac Fuentes
-# Last modified February 12, 2020
+"""
+@Professor: Olac Fuentes
+@author: Efrain Retana
+@TA : Oscar Galindo
+@Assignment: Lab 3
+"""
 
 import matplotlib.pyplot as plt
 import math
-import numpy as np
-from time import process_time
+import time
 
 class ListNode:
     # Constructor
@@ -42,23 +44,37 @@ class List:
         #appends all the set of numbers in the given list 
         for d in python_list:
             self.append(d)
+#---------------------------------------
+    def length(self):
+        if self.head is None:
+            return
+        length = 0
+        tempL1 = self.head
+        
+        while tempL1 != None:
+            length += 1
+            tempL1 = tempL1.next
+        return length
+        
 #--------------------------------
 #PROBLEM 3
     def insert(self,i,x):
-        #inserts x right before index i
-        tempL1 = L1.head
-
-        if self.head == None :  # if list is empty
-            return
+        if self.head is None:
+            return None
+        if self.length() < i:
+            raise ValueError('Index out of Bounds')
+        tempL1 = self.head
         if i == 0:
-            self.head = ListNode(x,self.head)
-        # iterate until the index then insert new node before i
-        while i > 1 and tempL1  != None:
-            tempL1 = tempL1.next
-            i -= 1
-        newNode = ListNode(x,None)
-        #set next for new node as node at i
-        tempL1.next,newNode.next = newNode,tempL1.next
+            self.head = ListNode(x,self.head.next)
+        else:
+            while i > 1:
+                tempL1 = tempL1.next
+                i -= 1
+            tempL1.next = ListNode(x,tempL1.next)
+            if tempL1.next.next is None:
+                self.tail = tempL1.next
+        
+            
 #------------------------------------------------------
 #PROBLEM 4
     def remove(self,x):
@@ -77,36 +93,40 @@ class List:
         tempL1.next = tempL1.next.next
 #--------------------------------------
 # PROBLEM 5
-    def pop(self,*arg):
-        if self.head == None:
+    def pop(self,i = math.inf): # removes the element at index i, or if no index given
+        # removes the last element
+        
+        if self.head == None: # if list is empty retur
             return
         tempL1 = self.head
-        # if optional parameter is not used for (index)
-        if None in arg:
-            #iterate through the list, remove the last element and return its value
+            #if optional parameter is not used
+        # remove the last node and return its value
+        if i == math.inf:
             while tempL1.next.next != None:
                 tempL1 = tempL1.next
             save_val = tempL1.next.data
+            self.tail = tempL1
             tempL1.next = None
+            
             return save_val
         else:
-            # if optional parameter is used
-            for i in arg:
-                #iterate to the given index tnen remove and return its value
-                while i != 1 and tempL1.next != None:
-                    tempL1 = tempL1.next
-                    i = i - 1
-                if i != 1 and tempL1.next == None:
-                    return ValueError
-                save_val = tempL1.next.data
-                tempL1.next = tempL1.next.next
-                return save_val
+        # if optional parameter is used iter until index
+            while i != 1 and tempL1.next != None:
+                tempL1 = tempL1.next
+                i = i - 1
+            if i != 1 and tempL1.next == None: # if we reach None or index 1, then the pop value
+                                                # is out of index
+                return ValueError
+            save_val = tempL1.next.data
+            tempL1.next = tempL1.next.next # remove the node index in the array and return its value
+            return save_val
             
 #-----------------------------------
 #PROBLEM 6
     def clear(self):
         # clear the whole list
-        self.head == None
+        self.head = None
+        self.tail = None
 #------------------------------------
 #PROBLEM 7
     def index(self,i,firstBounds = 0,secondBounds = math.inf):
@@ -260,25 +280,84 @@ if __name__ == "__main__":
     # It won't execute when this file is imported
     plt.close('all')
     L1 = List()
-    L1.extend([5,1,4,2,6])
-    start_time = process_time()
-    L1.insert(0,8)
+    # APPEND 1
+    start_time = time.time_ns()
+    L1.append(0)
+    end_time = time.time_ns()
+    print('Append Total Process Time: %10.20f' % (end_time - start_time))
+    L1.draw('Append')
+    # EXTEND 2
+    start_time = time.time_ns()
+    L1.extend([5,1,4,2,6,3])
+    end_time = time.time_ns()
+    print('Extend Total Process Time: %10.25f' % (end_time - start_time))
+    L1.draw('Extend')
+    # INSERT 3
+    start_time = time.time_ns()
+    L1.insert(5,8)
+    end_time = time.time_ns()
+    print('Insert Total Process Time: %10.25f' % (end_time - start_time))
+    L1.draw('Insert')
+    # REMOVE 4
+    start_time = time.time_ns()
+    L1.remove(4)
     end_time = process_time()
-    print('Total Process Time: ',end_time - start_time)
-#    L1.insert(0,8)
-#    L1.remove(2)
-#    print(L1.pop(3))
-    print(L1.index(1))
+    print('Remove Total Process Time: %10.25f' % (end_time - start_time))
+    L1.draw('Remove')
+    # POP 5a
+    start_time = time.time_ns()
+    print(L1.pop(2))
+    end_time = time.time_ns()
+    print('Pop Total Process Time: %10.25f' % (end_time - start_time))
+    L1.draw('Pop a')
+    # POP 5b
+    start_time = time.time_ns()
+    print(L1.pop())
+    end_time = time.time_ns()
+    print('Pop Total Process Time: %10.25f' % (end_time - start_time))
+    L1.draw('Pop b')
+    # CLEAR 6
+    start_time = time.time_ns()
+    L1.clear()
+    end_time = time.time_ns()
+    print('Clear Total Process Time: %10.25f' % (end_time - start_time))
+    L1.draw('Clear')
+    #-------------------------
+    L1.extend([5,1,4,2,6,8,4])
+    L1.draw('Current List')
+    #------------------------
+    # INDEX 7a
+    start_time = time.time_ns()
+    print(L1.index(2))
+    end_time = time.time_ns()
+    print('Index Total Process Time: %10.25f' % (end_time - start_time))
+    # INDEX 7b
+    start_time = time.time_ns()
+    print(L1.index(6,2,5))
+    end_time = time.time_ns()
+    print('Index From Total Process Time: %10.25f' % (end_time - start_time))
+    #COUNT 8
+    start_time = time.time_ns()
+    print(L1.count(4))
+    end_time = time.time_ns()
+    print('Count Total Process Time: %10.25f' % (end_time - start_time))
+    # SORT 9
+    start_time = time.time_ns()
+    L1.sort()
+    end_time = time.time_ns()
+    print('Sort Total Process Time: %10.25f' % (end_time - start_time))
+    L1.draw('Sorted List')
+    # REVERSE 10
+    start_time = time.time_ns()
     L1.reverse()
-#    L1.draw('Empty list')
-#    L1.extend(list(np.random.permutation(10)))
-#    L1.draw('Unsorted list')
-#    L1 = List()
-#    L1.extend(list(np.arange(10)))
-#    L1.draw('Sorted list')
-#    L1.tail = L1.head.next.next
-#    L1.draw('Bad list!')
-#    L1.tail = None
-#    L1.draw('Another bad list!')
+    end_time = time.time_ns()
+    print('Reverse Total Process Time: %10.21f' % (end_time - start_time))
+    L1.draw('Reversed List')
+    # COPY 11
+    print('Memory Allocation L1:',L1)
+    L1.print()
+    print('Memory Allocation L1 Copy:',L1.copy())
+    L1.copy().print()
+
 
 
