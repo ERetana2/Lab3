@@ -303,7 +303,7 @@ if __name__ == "__main__":
     # REMOVE 4
     start_time = time.time_ns()
     L1.remove(4)
-    end_time = process_time()
+    end_time = time.time_ns()
     print('Remove Total Process Time: %10.25f' % (end_time - start_time))
     L1.draw('Remove')
     # POP 5a
