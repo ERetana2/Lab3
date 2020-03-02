@@ -48,6 +48,7 @@ class List:
             self.append(d)
 #---------------------------------------
     def length(self):
+        #determines the length of a list
         if self.head is None:
             return
         length = 0
@@ -61,14 +62,17 @@ class List:
 #--------------------------------
 #PROBLEM 3
     def insert(self,i,x):
-        if self.head is None:
+        # inserts value at given index
+        if self.head is None: # if it is null return None
             return None
-        if self.length() < i:
+        if self.length() < i: # if the length < the given, raise an error
             raise ValueError('Index out of Bounds')
         tempL1 = self.head
+        # if index is 0, append to the head of the list
         if i == 0:
             self.head = ListNode(x,self.head.next)
         else:
+            # iterate to the given index, then place the node and readjust the pointers
             while i > 1:
                 tempL1 = tempL1.next
                 i -= 1
@@ -88,11 +92,17 @@ class List:
              return
         tempL1 = L1.head
         #iterate until it finds the x value in the list, and if there is none, return valueError
-        while tempL1.next.data != x:
-            if tempL1.next == None:
-                return ValueError
+        while tempL1 is not None:
+            if tempL1.data == x:
+                break
+            left = tempL1
             tempL1 = tempL1.next
-        tempL1.next = tempL1.next.next
+            
+        if tempL1 is None:
+            raise ValueError('Index not Found')
+        
+        left.next = tempL1.next # readjust pointers
+        tempL1 = None
 #--------------------------------------
 # PROBLEM 5
     def pop(self,i = math.inf): # removes the element at index i, or if no index given
@@ -302,7 +312,7 @@ if __name__ == "__main__":
     L1.draw('Insert')
     # REMOVE 4
     start_time = time.time_ns()
-    L1.remove(4)
+    L1.remove(9)
     end_time = time.time_ns()
     print('Remove Total Process Time: %10.25f' % (end_time - start_time))
     L1.draw('Remove')
