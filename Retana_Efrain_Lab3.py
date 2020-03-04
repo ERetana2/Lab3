@@ -93,13 +93,13 @@ class List:
              return
         tempL1 = L1.head
         #iterate until it finds the x value in the list, and if there is none, return valueError
-        while tempL1 is not None:
+        while tempL1.next is not None:
             if tempL1.data == x:
                 break
             left = tempL1
             tempL1 = tempL1.next
             
-        if tempL1 is None:
+        if tempL1.next is None or tempL1 is None:
             raise ValueError('Index not Found')
         
         left.next = tempL1.next # readjust pointers
@@ -301,7 +301,7 @@ if __name__ == "__main__":
     L1.draw('Append')
     # EXTEND 2
     start_time = time.time()
-    L1.extend(np.random.permutation(50))
+    L1.extend(np.random.permutation(10))
     end_time = time.time()
     print('Extend Total Process Time: ', (end_time - start_time))
     L1.draw('Extend')
@@ -336,7 +336,7 @@ if __name__ == "__main__":
     print('Clear Total Process Time:',(end_time - start_time))
     L1.draw('Clear')
     #-------------------------
-    L1.extend(np.random.permutation(20))
+    L1.extend(np.random.permutation(10))
     L1.draw('Current List')
     #------------------------
     # INDEX 7a
